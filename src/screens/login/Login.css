@@ -1,0 +1,36 @@
+.loginPanel{
+    text-align: center;
+    margin-top: 20px;
+}
+.RegisterPanel{
+    text-align: center;
+    margin-top: 20px;
+}
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+.red {
+    color: red;
+}
+.dispBlockRegister {
+    display: block;
+    margin: auto;
+    color:black;
+}
+.AuthenticationHeading{
+    padding-top: 12px;
+    padding-left: 5px;
+    color: aliceblue;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: normal;
+}
+.headingDiv {
+    height: 55px;
+    position:relative;
+    background-color: purple;
+    top: -20px;
+}

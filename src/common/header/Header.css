@@ -1,0 +1,21 @@
+.header{
+    background-color: purple;
+    height: 70px;
+    padding: 11px;
+}
+.logo{
+    background-color: #ff7f7f;
+    height: 35px;
+    float: left;
+}
+.logButton{
+    float: right;
+}
+.bookButton{
+    float: right;
+    margin-right: 10px;
+}
+.textDoc {
+    padding-left: 30px;
+    color: white;
+}

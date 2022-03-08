@@ -1,0 +1,21 @@
+.nocolorStar{
+    color: grey;
+    cursor: pointer;
+}
+.colorStar{
+    color: yellow;
+    cursor: pointer;
+}
+.nocolorStar:hover{
+    color: yellowgreen;
+}
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+.red {
+    color: red;
+}
