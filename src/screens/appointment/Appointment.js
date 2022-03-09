@@ -19,7 +19,7 @@ const styles = (theme) => ({
 });
 
 function Appointment(props) {
-    const [AppointmentData, setAppointmentData] = React.useState([{id: "123", name: "siddharrth", date: "19-2-2111", symptoms: "", history: ""}, {id: "123", name: "rodshds", date: "19-2-2w11", symptoms: "cold", history: ""}, {id: "123", name: "lol", date: "19-2-2111", symptoms: "fever", history: "NA"}]);
+    const [AppointmentData, setAppointmentData] = React.useState([]);
     const { classes } = props;
     const [isRateAppointMentCalled, setIsRateAppointMentCalled] = React.useState(false);
 
@@ -29,6 +29,41 @@ function Appointment(props) {
     function closeModal(){
         setIsRateAppointMentCalled(false);
     }
+    function showAppointmentList(){
+        async function appointmentList(){
+            const accessToken = JSON.parse(window.sessionStorage.getItem("token-details"));
+            const userId = JSON.parse(window.sessionStorage.getItem("user-details")).id;
+            var URL = "http://localhost:8080/users/"+ userId + "/appointments";
+                try {
+                const rawPromise = fetch(URL,{
+                    method: 'GET',
+                    headers: {
+                        "Accept": "application/json;charset=UTF-8",
+                        "authorization" : `Bearer ${accessToken}`
+                    }
+                })
+                const rawResponse = await rawPromise;
+                var result = await rawResponse.json();
+                
+                if(rawResponse.ok){
+                    console.log(result);
+                    setAppointmentData(result);
+                }else{
+                    const error = new Error();
+                    error.message = error.message ?  error.message : "something happened";
+                    throw error;
+                }
+        
+                } catch (error) {
+                    alert(error);
+            }
+        }
+        appointmentList();
+    }
+    useEffect(() => {
+        showAppointmentList();
+    },[]);
+
     return (
         <div>    
             <div className={classes.root}>
@@ -37,16 +72,16 @@ function Appointment(props) {
                         <Paper elevation={3}>
                         <Box style = {{marginLeft: "30px"}}>
                             <Typography style={{fontWeight: "bold"}} variant="subtitle1" component = "h6">
-                                Dr: {data.name}
+                                Dr: {data.doctorName}
                             </Typography>
                             <Typography variant="subtitle1" component = "h6">
-                                Date: {data.date}
+                                Date: {data.appointmentDate}
                             </Typography>
                             <Typography variant="subtitle1" component = "h6">
-                                Date: {data.symptoms}
+                                Symptoms: {data.symptoms ? data.symptoms : ""}
                             </Typography>
                             <Typography variant="subtitle1" component = "h6">
-                                PriorMedicalHistory: {data.history}
+                                PriorMedicalHistory: {data.priorMedicalHistory ? data.priorMedicalHistory : ""}
                             </Typography>
                             <br />
                             <br />

@@ -14,6 +14,10 @@ import { TextField } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Button, Checkbox } from "@material-ui/core";
+import { TimePicker } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const styles = (theme) => ({
     root: {
@@ -32,9 +36,15 @@ const styles = (theme) => ({
 
 function BookAppointment(props){
   const [openModal, setIsOpen] = React.useState(true);
-  const [value, setValue] = React.useState('one');
+  const [dateValue, setDateValue] = React.useState(null);
+  const [medicalHistoryValue, setMedicalHistoryValue] = React.useState("");
+  const [symptomsValue, setSymptomsValue] = React.useState("");
+  const [timeValue, setTimeValue] = React.useState(null);
   var loggedIn = props.loginIsSuccessful;
   const { classes } = props;
+
+  const [dateValueReq, setreqDate] = useState("dispNone");
+  const [timeValueReq, setreqTime] = useState("dispNone");
 
   console.log(props);
   
@@ -59,7 +69,75 @@ function BookAppointment(props){
     setIsOpen(false);
     props.closeModal();
   }
+  function dateIsChanged(e) {
+    console.log(e.target.value);
+    setDateValue(e.target.value);
+  }
+  function timeIsChanged(e) {
+    console.log(e);
+    setTimeValue(e);
+  }
+  function medicalHistoryIsChanged(e) {
+    setMedicalHistoryValue(e.target.value);
+  }
+  function symptomsIsChanged(e) {
+    setSymptomsValue(e.target.value);
+  }
+  function submitAppointment(){
+      dateValue === null ? setreqDate("dispBlock") : setreqDate("dispNone");
+      timeValue === null ? setreqTime("dispBlock") : setreqTime("dispNone");
+  
+      if (dateValue === null || timeValue === null) {
+        return;
+      }
+      async function appoint(){
 
+        const accessToken = JSON.parse(window.sessionStorage.getItem("token-details"));
+        const userDetails = JSON.parse(window.sessionStorage.getItem("user-details"));
+
+        const params = {
+          "doctorId": props.doctorData.id,
+          "doctorName": props.doctorData.firstName + " " + props.doctorData.lastName,
+          "userId": userDetails.id,
+          "userName": userDetails.firstName,
+          "userEmailId": userDetails.emailAddress,
+          "timeSlot": timeValue,
+          "appointmentDate": dateValue,
+          "symptoms": symptomsValue !== "" ? symptomsValue : "",
+          "priorMedicalHistory": medicalHistoryValue !== "" ? medicalHistoryValue : ""
+        }
+        console.log(props);
+        console.log(params);
+          try {
+            const rawPromise = fetch('http://localhost:8080/appointments/appointments',{
+                method: 'POST',
+                body: JSON.stringify(params),
+                headers: {
+                  "Accept": "application/json;charset=UTF-8",
+                  "Content-Type": "application/json;charset=UTF-8",
+                  "authorization" : `Bearer ${accessToken}`
+                }
+            })
+            const rawResponse = await rawPromise;
+            //var result = await rawResponse.json();
+            
+          if(rawResponse.ok){
+              alert("your Appointment is booked");
+              closeModal();
+          }else{
+              const error = new Error();
+              //error.message = result.message ?  result.message : "something happened";
+              throw error;
+          }
+    
+          } catch (error) {
+            console.log("errrrrrrrrrrrrrrrr");
+              alert(error);
+          }
+    }
+    appoint();
+  }
+  
     return reactDom.createPortal(
         <div>
           <Modal
@@ -83,7 +161,8 @@ function BookAppointment(props){
                     <InputLabel htmlFor="doctorName">doctorName</InputLabel>
                     <Input
                       id="doctorName"
-                      value= {props.doctorName}
+                      disabled
+                      value= {props.doctorData.firstName + " " + props.doctorData.lastName}
                     />
                   </FormControl>
                   <br />
@@ -95,23 +174,26 @@ function BookAppointment(props){
                     <br />
                     <TextField
                       id="releaseStart"
+                      data-date-format="YYYY MM DD"
                       type="Date"
+                      onChange={(e) => dateIsChanged(e)}
                     />
+                    <FormHelperText className={dateValueReq}>
+                      <span className="red">Select a date</span>
+                    </FormHelperText>
                   </FormControl>
                   <br/>
-                  <FormControl>
-                    <InputLabel htmlFor="TimeSlot">TimeSlot</InputLabel>
-                    <Select placeholder={"TimeSlot"} value="">
-                      {[2,3,4,5,5].map((data) => (
-                        <MenuItem key={data}>
-                          <Checkbox
-                            id={data}
-                            name={data}
-                          />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <br/>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <TimePicker
+                          label="TimeSlot"
+                          value={timeValue}
+                          onChange={(e) => timeIsChanged(e)}
+                        />
+                      <FormHelperText className={timeValueReq}>
+                        <span className="red">Select a time slot</span>
+                    </FormHelperText>  
+                 </MuiPickersUtilsProvider>
                   <br/>
                   <FormControl>
                     <InputLabel htmlFor="medicalHistory">MedicalHistory</InputLabel>
@@ -121,7 +203,8 @@ function BookAppointment(props){
                     <br />
                     <Input
                       id="medicalHistory"
-                      value= ""
+                      value= {medicalHistoryValue}
+                      onChange={(e) => medicalHistoryIsChanged(e)}
                     />
                   </FormControl>
                   <br/>
@@ -133,7 +216,8 @@ function BookAppointment(props){
                     <br />
                     <Input
                       id="symptoms"
-                      value= ""
+                      value= {symptomsValue}
+                      onChange={(e) => symptomsIsChanged(e)}
                     />
                   </FormControl>
                   <br/>
@@ -142,6 +226,7 @@ function BookAppointment(props){
                   <Button
                     color="primary"
                     variant="contained"
+                    onClick={submitAppointment}
                   >
                     BOOK APPOINTMENT
                   </Button>

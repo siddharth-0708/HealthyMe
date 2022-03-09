@@ -74,7 +74,7 @@ export default function Login(props){
           async function login(){
             var params = window.btoa(`${username}:${password}`);
               try {
-                const rawPromise = fetch('http://localhost:8085/api/v1/auth/login',{
+                const rawPromise = fetch('http://localhost:8080/auth/login',{
                     method: 'POST',
                     headers: {
                       "Accept": "application/json;charset=UTF-8",
@@ -86,7 +86,7 @@ export default function Login(props){
                 
               if(rawResponse.ok){
                   window.sessionStorage.setItem('user-details', JSON.stringify(result));
-                  window.sessionStorage.setItem('token-details', JSON.stringify(rawResponse.headers.get("access-token")));
+                  window.sessionStorage.setItem('token-details', JSON.stringify(result.accessToken));
                   loggedIn();
                   closeModal();
               }else{
@@ -115,14 +115,14 @@ export default function Login(props){
 
           async function registerSubmit(){
             const params = {
-                "email_address": email,
-                "first_name": firstName,
-                "last_name": lastName,
-                "mobile_number": contact,
+                "firstName": firstName,
+                "lastName": lastName,
+                "mobile": contact,
+                "emailId": email,
                 "password": password
               }
               try {
-                const rawPromise = fetch('http://localhost:8085/api/v1/signup',{
+                const rawPromise = fetch('http://localhost:8080/users/register',{
                      
                 body: JSON.stringify(params),
                       method: 'POST',

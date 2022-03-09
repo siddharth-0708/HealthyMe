@@ -15,6 +15,9 @@ const Home = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
+      function checkUserLoggedIn(data){
+        setIsUserLoggedIn(data);
+      }
       function TabPanel(props) {
         const {value} = props;
 
@@ -35,7 +38,7 @@ const Home = () => {
 
     return (
         <div className="main-container">
-            <Header></Header>
+            <Header checkUserLoggedIn = {checkUserLoggedIn}></Header>
             <Tabs
             value={value}
             onChange={handleChange}

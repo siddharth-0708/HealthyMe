@@ -8,7 +8,6 @@ import {Link} from "react-router-dom";
 
 export default function Header(props){
     const [openModal, setIsOpen] = React.useState(false);
-    const[showBookShowBtn, setBookShowBtn] = useState(false);
     const[showLogout, setShowLogout] = useState(false);
     const lastKey = window.location.href.split("/");
     const key = lastKey[lastKey.length - 1];
@@ -18,7 +17,7 @@ export default function Header(props){
             async function logout(){
                 const accessToken = JSON.parse(window.sessionStorage.getItem("token-details"));
                   try {
-                    const rawPromise = fetch('http://localhost:8085/api/v1/auth/logout',{
+                    const rawPromise = fetch('http://localhost:8080/auth/logout',{
                         method: 'POST',
                         headers: {
                           "Accept": "application/json;charset=UTF-8",
@@ -26,12 +25,11 @@ export default function Header(props){
                         }
                     })
                     const rawResponse = await rawPromise;
-                    //var result = await rawResponse.json();
                     
                   if(rawResponse.ok){
                       window.sessionStorage.removeItem("token-details");
                       window.sessionStorage.removeItem("user-details");
-                      props.logoutIsSuccessful();
+                      logoutIsSuccessful();
                   }else{
                       const error = new Error();
                       error.message = error.message ?  error.message : "something happened";
@@ -50,45 +48,15 @@ export default function Header(props){
     function onCloseModalHandler() {
         setIsOpen(false);
     }
-    function showBookShowButton() {
-        setBookShowBtn(true);
-    }
-    function hideBookShowButton() {
-        setBookShowBtn(false);
-    }
-    function showLogoutFunc() {
+    function loginIsSuccessful(){
+        setIsOpen(false);
         setShowLogout(true);
+        props.checkUserLoggedIn(true);
     }
-    function hideLogoutFunc() {
+    function logoutIsSuccessful(){
         setShowLogout(false);
+        props.checkUserLoggedIn(false);
     }
-    function ButtonComponent() {
-        if(!showLogout){
-            return(
-                <div className ="bookButton">
-                    {showBookShowBtn ? <Button color = "primary" onClick = {openModalHandler} variant="contained">Book Show</Button> : null}
-                </div>
-            )
-        }else{
-            return(
-                <div className ="bookButton">
-                    {showBookShowBtn ? <Link to = {{pathname: `/bookshow/${key}`}}><Button color = "primary" variant="contained">Book Show</Button></Link> : null}
-                </div>
-            )
-        }
-    }
-    // useEffect(() => {
-    //     if(props.updateBtn){
-    //         showBookShowButton();
-    //     }else{
-    //         hideBookShowButton();
-    //     }
-    //     if(props.isLoggedIn){
-    //         showLogoutFunc();
-    //     }else{
-    //         hideLogoutFunc();
-    //     }
-    // });
     return(
         <div className = "header">
             <img src = {logo} className="logo" alt="LOGO"/>
@@ -96,7 +64,7 @@ export default function Header(props){
             <div className ="logButton">
             <Button color = {showLogout ? "secondary ": "primary"} variant="contained" onClick = {openModalHandler}>{showLogout ? "Logout": "Login"}</Button>
             </div>
-            {openModal ? <Login closeModal = {onCloseModalHandler} loginIsSuccessful = {props.loginIsSuccessful} showLogout = {showLogoutFunc}></Login>: null}
+            {openModal ? <Login closeModal = {onCloseModalHandler} loginIsSuccessful = {loginIsSuccessful}></Login>: null}
         </div>
     ) 
 }

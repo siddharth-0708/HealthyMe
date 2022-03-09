@@ -20,16 +20,16 @@ const styles = (theme) => ({
 });
 
 function DoctorList(props) {
-    const [moviesData, setMoviesData] = React.useState([{id: "123", name: "siddharrth", specialist: "general", rating: 2}, {id: "3", name: "siddharrth", specialist: "pulmo", rating: 3}, {id: "12", name: "siddharrth", specialist: "cardio", rating: 5}]);
     const { classes } = props;
     const [isAppointMentCalled, setIsAppointmentCalled] = React.useState(false);
     const [isAppointMentDetailsCalled, setIsAppointmentDetailsCalled] = React.useState(false);
     const [doctorCalled, setDoctorCalled] = React.useState("");
     const [dropdownSelect, setDropdownSelect] = React.useState("");
-    const [doctorsToShow, setDoctorsToShow] = React.useState(moviesData);
+    const [doctorsToShow, setDoctorsToShow] = React.useState([]);
+    const [speciality, setSpeciality] = React.useState("");
 
-    function bookAppointment(doctorName){
-        setDoctorCalled(doctorName);
+    function bookAppointment(doctor){
+        setDoctorCalled(doctor);
         setIsAppointmentCalled(true);
     }
     function viewAppointmentDetails(){
@@ -43,20 +43,52 @@ function DoctorList(props) {
         setIsAppointmentDetailsCalled(false);
     }
     function handleChange(e){
-        var arr = [];
         if(e.target.value === ""){
-            arr = [...moviesData];
+            setSpeciality("");
         }else{
-            var data = [...moviesData];
-            for(let i = 0; i < data.length; i++){
-                if(data[i].specialist === e.target.value){
-                    arr.push(data[i]);
-                }
-            }
+            setSpeciality(e.target.value);
         }
-        setDoctorsToShow(arr);
         setDropdownSelect(e.target.value);
     }
+    function showDoctorsList(){
+        async function doctorList(){
+            if(speciality === ""){
+                var URL = "http://localhost:8080/doctors"
+            }else{
+                var params = new URLSearchParams({
+                    speciality: speciality,
+                    }).toString();
+                 var URL = "http://localhost:8080/doctors?" + params;   
+            }
+              try {
+                const rawPromise = fetch(URL,{
+                    method: 'GET',
+                    headers: {
+                      "Accept": "application/json;charset=UTF-8",
+                    }
+                })
+                const rawResponse = await rawPromise;
+                var result = await rawResponse.json();
+                
+              if(rawResponse.ok){
+                setDoctorsToShow(result);
+                console.log(result);
+              }else{
+                  const error = new Error();
+                  error.message = error.message ?  error.message : "something happened";
+                  throw error;
+              }
+        
+              } catch (error) {
+                  alert(error);
+              }
+        }
+        doctorList();
+    }
+    useEffect(() => {
+        showDoctorsList();
+    },[speciality]);
+
     return (
         <div>
             <div style={{display: "flex", justifyContent:"center"}}>
@@ -72,9 +104,12 @@ function DoctorList(props) {
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value={"general"}>general</MenuItem>
-                    <MenuItem value={"pulmo"}>pulmo</MenuItem>
-                    <MenuItem value={"cardio"}>cardio</MenuItem>
+                    <MenuItem value={"CARDIOLOGIST"}>CARDIOLOGIST</MenuItem>
+                    <MenuItem value={"GENERAL_PHYSICIAN"}>GENERAL PHYSICIAN</MenuItem>
+                    <MenuItem value={"DENTIST"}>DENTIST</MenuItem>
+                    <MenuItem value={"PULMONOLOGIST"}>PULMONOLOGIST</MenuItem>
+                    <MenuItem value={"ENT"}>ENT</MenuItem>
+                    <MenuItem value={"GASTRO"}>GASTRO</MenuItem>
                     </Select>
                 </FormControl>
                 </div>
@@ -86,12 +121,12 @@ function DoctorList(props) {
                 <Paper elevation={3}>
                 <Box style = {{marginLeft: "30px"}}>
                     <Typography style = {{fontWeight: "bold"}} variant="subtitle1" component = "h6">
-                        Doctor Name: {data.name}
+                        Doctor Name: {data.firstName + " " + data.lastName}
                     </Typography>
                     <br/>
                     <br/>
                     <Typography style = {{fontWeight: "bold"}} variant="subtitle1" component = "h6">
-                        Speciality: {data.specialist}
+                        Speciality: {data.speciality}
                     </Typography>
                     <br/>
                     <Typography style = {{fontWeight: "bold"}} variant="subtitle1" component = "h6">
@@ -100,14 +135,14 @@ function DoctorList(props) {
                     ))}
                     </Typography>
                     <div style={{display: "flex"}}>
-                        <Button color = "primary" variant="contained" style={{flex: "50%", margin: "20px"}} onClick = {()=>bookAppointment(data.name)}> BOOK APPOINTMENT</Button>
+                        <Button color = "primary" variant="contained" style={{flex: "50%", margin: "20px"}} onClick = {()=>bookAppointment(data)}> BOOK APPOINTMENT</Button>
                         <Button color = "default" variant="contained" style={{flex: "50%", margin: "20px", backgroundColor: "green", color:"white"}} onClick = {()=>viewAppointmentDetails()}>VIEW DETAILS</Button>
                     </div>
                 </Box>
             </Paper>
             </Box>
         ))}
-        {isAppointMentCalled ? <BookAppointment closeModal = {closeModal} doctorName = {doctorCalled}></BookAppointment> : null}
+        {isAppointMentCalled ? <BookAppointment closeModal = {closeModal} doctorData = {doctorCalled}></BookAppointment> : null}
         {isAppointMentDetailsCalled ? <DoctorDetails closeModalDetails = {closeModalDetails}></DoctorDetails> : null}
         </div>
         </div>
