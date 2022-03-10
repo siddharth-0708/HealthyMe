@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import reactDom from "react-dom";
-import { Tab } from "@material-ui/core";
-import { Tabs } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core/styles";
@@ -10,18 +8,14 @@ import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import { FormHelperText } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
 import { TextField } from "@material-ui/core";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import {Button, Checkbox } from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import { StarRate } from "@material-ui/icons";
 import "./RateAppointment.css";
 
 const styles = (theme) => ({
     root: {
-      margin: theme.spacing.unit,
-      width: 500,
+      width: 500
     },
     heading: {
       fontSize: "17px",
@@ -142,7 +136,6 @@ function RateAppointment(props){
           >
         <div>
             <Typography
-                    variant="headline"
                     className={classes.heading}
                     component="h2"
                   >

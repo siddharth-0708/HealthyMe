@@ -1,10 +1,8 @@
-import React, { useEffect,useState } from "react";
+import React, { useState } from "react";
 import logo from '../../assets/logo.jpeg';
 import "./Header.css";
 import {Button} from "@material-ui/core";
-//import Modal from "../../screens/modals/Modal";
 import Login from "../../screens/login/Login";
-import {Link} from "react-router-dom";
 
 export default function Header(props){
     const [openModal, setIsOpen] = React.useState(false);
@@ -62,7 +60,7 @@ export default function Header(props){
             <img src = {logo} className="logo" alt="LOGO"/>
             <span className="textDoc">Doctor Finder</span>
             <div className ="logButton">
-            <Button color = {showLogout ? "secondary ": "primary"} variant="contained" onClick = {openModalHandler}>{showLogout ? "Logout": "Login"}</Button>
+            <Button color = {showLogout ? "secondary": "primary"} variant="contained" onClick = {openModalHandler}>{showLogout ? "Logout": "Login"}</Button>
             </div>
             {openModal ? <Login closeModal = {onCloseModalHandler} loginIsSuccessful = {loginIsSuccessful}></Login>: null}
         </div>

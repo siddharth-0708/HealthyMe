@@ -62,6 +62,8 @@ export default function Login(props){
         const [reqFirstName, setreqFirstName] = useState("dispNone");
         const [reqLastName, setreqLastName] = useState("dispNone");
         const [reqEmail, setreqEmail] = useState("dispNone");
+        const [verifyMobile, setVerifyMobile] = useState("dispNone");
+
         const [reqContact, setreqContact] = useState("dispNone");
         const [registerContact, setRegisterContact] = useState("dispNone");
 
@@ -127,6 +129,15 @@ export default function Login(props){
             }
               return (false)
           }
+          function phonenumber(inputtxt)
+            {
+              var phoneno = /^\d{10}$/;
+              if((inputtxt.match(phoneno))){
+                  return true;
+                }else{
+                  return false;
+                }
+            } 
 
           password === "" ? setreqPassword("dispBlock") : setreqPassword("dispNone");
           firstName === "" ? setreqFirstName("dispBlock") : setreqFirstName("dispNone");
@@ -137,10 +148,19 @@ export default function Login(props){
           if(validateEmail(email)){
             setIsValidEmail("dispNone");
           }else{
-            setIsValidEmail("dispBlock");
+            if(email !== ""){
+              setIsValidEmail("dispBlock");
+            }
+          }
+          if(phonenumber(contact)){
+            setVerifyMobile("dispNone");
+          }else{
+            if(contact !== ""){
+              setVerifyMobile("dispBlock");
+            }
           }
 
-          if (password === "" || firstName === "" || lastName === "" || email === "" || contact === "" || !validateEmail(email)) {
+          if (password === "" || firstName === "" || lastName === "" || email === "" || contact === "" || !validateEmail(email) || !phonenumber(contact)) {
             return;
           }
 
@@ -271,6 +291,9 @@ export default function Login(props){
               <Input id = "contact" value = {contact} onChange={(e) => setContact(e.target.value)}/>
               <FormHelperText className={reqContact}>
                 <span className="red">Required</span>
+              </FormHelperText>
+              <FormHelperText className={verifyMobile}>
+                <span className="red">Enter valid mobile number</span>
               </FormHelperText>
           </FormControl>
           <br/>

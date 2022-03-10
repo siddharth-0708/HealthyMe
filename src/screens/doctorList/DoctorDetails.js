@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React,{useState} from "react";
 import reactDom from "react-dom";
-import { Tab } from "@material-ui/core";
-import { Tabs } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core/styles";
 import Modal from 'react-modal';
 import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import { TextField } from "@material-ui/core";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import {Button, Checkbox } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 import { StarRate } from "@material-ui/icons";
 
 const styles = (theme) => ({
     root: {
-      margin: theme.spacing.unit,
       width: 500,
     },
     heading: {
@@ -34,7 +24,6 @@ const styles = (theme) => ({
 
 function DoctorDetails(props){
   const [openModal, setIsOpen] = React.useState(true);
-  const [value, setValue] = React.useState('one');
   var loggedIn = props.loginIsSuccessful;
   const { classes } = props;
 
@@ -72,7 +61,6 @@ function DoctorDetails(props){
           >
         <div>
             <Typography
-                    variant="headline"
                     className={classes.heading}
                     component="h2"
                   >
@@ -86,7 +74,7 @@ function DoctorDetails(props){
                             Dr: {props.doctorData.firstName + " " + props.doctorData.lastName}
                         </Typography>
                         <Typography variant="subtitle1">
-                            Total Experience: {props.doctorData.totalYearsOfExp}
+                            Total Experience: {props.doctorData.totalYearsOfExp} Years
                         </Typography>
                         <Typography variant="subtitle1">
                             Speciality: {props.doctorData.speciality}

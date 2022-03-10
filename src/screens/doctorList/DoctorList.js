@@ -132,7 +132,7 @@ function DoctorList(props) {
                     <br/>
                     <Typography style = {{fontWeight: "bold"}} variant="subtitle1" component = "h6">
                         Rating: {[1,2,3,4,5].map((num)=>(
-                        <StarRate style = {num <= data.rating ? {color: "yellow"} : {color: "pink"}} key = {data}></StarRate>
+                        <StarRate style = {num <= data.rating ? {color: "yellow"} : {color: "pink"}} key = {num}></StarRate>
                     ))}
                     </Typography>
                     <div style={{display: "flex"}}>
@@ -143,7 +143,7 @@ function DoctorList(props) {
             </Paper>
             </Box>
         ))}
-        {isAppointMentCalled ? <BookAppointment closeModal = {closeModal} doctorData = {doctorCalled}></BookAppointment> : null}
+        {isAppointMentCalled ? <BookAppointment loginIsSuccessful ={props.loginIsSuccessful} closeModal = {closeModal} doctorData = {doctorCalled}></BookAppointment> : null}
         {isAppointMentDetailsCalled ? <DoctorDetails closeModalDetails = {closeModalDetails} doctorData = {doctorCalled}></DoctorDetails> : null}
         </div>
         </div>

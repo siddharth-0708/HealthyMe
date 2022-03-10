@@ -4,11 +4,6 @@ import { Box, Button } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { Paper } from "@material-ui/core";
 import RateAppointment from "./RateAppointment";
-import { StarRate } from "@material-ui/icons";
-import { FormControl, FormHelperText } from "@material-ui/core";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
 
 const styles = (theme) => ({
   root: {
@@ -70,7 +65,7 @@ function Appointment(props) {
         <div>    
             <div className={classes.root}>
                 {AppointmentData.map((data) => (
-                    <Box key = {data.id} sx={{ width: '100%', margin: "15px", padding: "20px"}}>
+                    <Box key = {data.appointmentId} sx={{ width: '100%', margin: "15px", padding: "20px"}}>
                         <Paper elevation={3}>
                         <Box style = {{marginLeft: "30px"}}>
                             <Typography style={{fontWeight: "bold"}} variant="subtitle1" component = "h6">

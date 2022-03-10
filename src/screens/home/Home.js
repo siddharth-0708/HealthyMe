@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import reactDom from "react-dom";
+import React, { useState} from "react";
 import Header from "../../common/header/Header";
 import { Tab } from "@material-ui/core";
 import { Tabs } from "@material-ui/core";
-import { TabPanel} from "@material-ui/core";
 import "./Home.css";
 import DoctorList from "../doctorList/DoctorList";
 import Appointment from "../appointment/Appointment";
@@ -24,7 +22,7 @@ const Home = () => {
         if(value === "one"){
             return (
               <div>
-                  <DoctorList></DoctorList>
+                  <DoctorList loginIsSuccessful = {isUserLoggedIn}></DoctorList>
               </div>
             );
           }else{

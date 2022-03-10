@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import reactDom from "react-dom";
-import { Tab } from "@material-ui/core";
-import { Tabs } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { withStyles } from "@material-ui/core/styles";
@@ -11,9 +9,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import { TextField } from "@material-ui/core";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import {Button, Checkbox } from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import { TimePicker } from "@material-ui/pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -21,8 +17,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 
 const styles = (theme) => ({
     root: {
-      margin: theme.spacing.unit,
-      width: 500,
+      width: 500
     },
     heading: {
       fontSize: "17px",
@@ -40,13 +35,17 @@ function BookAppointment(props){
   const [medicalHistoryValue, setMedicalHistoryValue] = React.useState("");
   const [symptomsValue, setSymptomsValue] = React.useState("");
   const [timeValue, setTimeValue] = React.useState(null);
-  var loggedIn = props.loginIsSuccessful;
   const { classes } = props;
 
   const [dateValueReq, setreqDate] = useState("dispNone");
   const [timeValueReq, setreqTime] = useState("dispNone");
 
   console.log(props);
+
+  if(!props.loginIsSuccessful){
+    alert("Please Login");
+    return null;
+  }
   
   Modal.setAppElement('#root');
 
@@ -148,7 +147,6 @@ function BookAppointment(props){
           >
         <div>
             <Typography
-                    variant="headline"
                     className={classes.heading}
                     component="h2"
                   >
