@@ -22,9 +22,11 @@ function Appointment(props) {
     const [AppointmentData, setAppointmentData] = React.useState([]);
     const { classes } = props;
     const [isRateAppointMentCalled, setIsRateAppointMentCalled] = React.useState(false);
+    const [ratingData, setRatingData] = React.useState(null);
 
-    function giveRatingToAppointment(){
+    function giveRatingToAppointment(data){
         setIsRateAppointMentCalled(true);
+        setRatingData(data);
     }
     function closeModal(){
         setIsRateAppointMentCalled(false);
@@ -86,14 +88,14 @@ function Appointment(props) {
                             <br />
                             <br />
                             <div>
-                                <Button color = "primary" variant="contained" style={{marginBottom: "20px"}} onClick = {()=>giveRatingToAppointment(data.name)}> RATE APPOINTMENT</Button>
+                                <Button color = "primary" variant="contained" style={{marginBottom: "20px"}} onClick = {()=>giveRatingToAppointment(data)}> RATE APPOINTMENT</Button>
                             </div>
                         </Box>
                     </Paper>
                     </Box>
                 ))}
             </div>
-            {isRateAppointMentCalled ? <RateAppointment closeModal = {closeModal}></RateAppointment> : null}
+            {isRateAppointMentCalled ? <RateAppointment ratingData = {ratingData} closeModal = {closeModal}></RateAppointment> : null}
         </div>
       );
 }

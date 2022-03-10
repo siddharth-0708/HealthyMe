@@ -33,7 +33,6 @@ const styles = (theme) => ({
   });
 
 function DoctorDetails(props){
-  const [doctorDetails, setDoctorDetails] = React.useState({name: "smith", experience: "21 years", speciality: "CARDIOLOGIST", birth: "22-01-1988", city: "hyderabad", Email: "Siddhs@gmail.com", mobile: "970025854",rating: 4});
   const [openModal, setIsOpen] = React.useState(true);
   const [value, setValue] = React.useState('one');
   var loggedIn = props.loginIsSuccessful;
@@ -83,30 +82,30 @@ function DoctorDetails(props){
             <Card>
                 <CardContent>
                     <Box style = {{marginLeft: "15px"}}>
-                        <Typography variant="subtitle1" component = "h6">
-                            Dr: {doctorDetails.name}
+                        <Typography variant="subtitle1">
+                            Dr: {props.doctorData.firstName + " " + props.doctorData.lastName}
                         </Typography>
-                        <Typography variant="subtitle1" component = "h6">
-                            Total Experience: {doctorDetails.experience}
+                        <Typography variant="subtitle1">
+                            Total Experience: {props.doctorData.totalYearsOfExp}
                         </Typography>
-                        <Typography variant="subtitle1" component = "h6">
-                            Speciality: {doctorDetails.speciality}
+                        <Typography variant="subtitle1">
+                            Speciality: {props.doctorData.speciality}
                         </Typography>
-                        <Typography variant="subtitle1" component = "h6">
-                            Date of Birth: {doctorDetails.birth}
+                        <Typography variant="subtitle1">
+                            Date of Birth: {props.doctorData.dob}
                         </Typography>
-                        <Typography variant="subtitle1" component = "h6">
-                            city: {doctorDetails.city}
+                        <Typography variant="subtitle1">
+                            city: {props.doctorData.address.city}
                         </Typography>
-                        <Typography variant="subtitle1" component = "h6">
-                            Email: {doctorDetails.Email}
+                        <Typography variant="subtitle1">
+                            Email: {props.doctorData.emailId}
                         </Typography>
-                        <Typography variant="subtitle1" component = "h6">
-                            Mobile: {doctorDetails.mobile}
+                        <Typography variant="subtitle1">
+                            Mobile: {props.doctorData.mobile}
                         </Typography>
-                        <Typography variant="subtitle1" component = "h6">
+                        <Typography variant="subtitle1">
                             Rating: {[1,2,3,4,5].map((num)=>(
-                            <StarRate style = {num <= doctorDetails.rating ? {color: "yellow"} : {color: "pink"}} key = {doctorDetails.rating}></StarRate>
+                            <StarRate style = {num <= props.doctorData.rating ? {color: "yellow"} : {color: "pink"}} key = {num}></StarRate>
                         ))}
                         </Typography>
                     </Box>

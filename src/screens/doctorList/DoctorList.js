@@ -32,7 +32,8 @@ function DoctorList(props) {
         setDoctorCalled(doctor);
         setIsAppointmentCalled(true);
     }
-    function viewAppointmentDetails(){
+    function viewAppointmentDetails(doctor){
+        setDoctorCalled(doctor);
         setIsAppointmentDetailsCalled(true);
     }
     function closeModal(){
@@ -136,14 +137,14 @@ function DoctorList(props) {
                     </Typography>
                     <div style={{display: "flex"}}>
                         <Button color = "primary" variant="contained" style={{flex: "50%", margin: "20px"}} onClick = {()=>bookAppointment(data)}> BOOK APPOINTMENT</Button>
-                        <Button color = "default" variant="contained" style={{flex: "50%", margin: "20px", backgroundColor: "green", color:"white"}} onClick = {()=>viewAppointmentDetails()}>VIEW DETAILS</Button>
+                        <Button color = "default" variant="contained" style={{flex: "50%", margin: "20px", backgroundColor: "green", color:"white"}} onClick = {()=>viewAppointmentDetails(data)}>VIEW DETAILS</Button>
                     </div>
                 </Box>
             </Paper>
             </Box>
         ))}
         {isAppointMentCalled ? <BookAppointment closeModal = {closeModal} doctorData = {doctorCalled}></BookAppointment> : null}
-        {isAppointMentDetailsCalled ? <DoctorDetails closeModalDetails = {closeModalDetails}></DoctorDetails> : null}
+        {isAppointMentDetailsCalled ? <DoctorDetails closeModalDetails = {closeModalDetails} doctorData = {doctorCalled}></DoctorDetails> : null}
         </div>
         </div>
       );

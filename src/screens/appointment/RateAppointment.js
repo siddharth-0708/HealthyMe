@@ -83,11 +83,53 @@ function RateAppointment(props){
     setRatingValue(parseInt(event.target.id, 10) + 1)
     setStarColor(starTemp);
   }
+  function submitRating(){
+
+    async function submit(){
+
+      const accessToken = JSON.parse(window.sessionStorage.getItem("token-details"));
+
+      const params = {
+        "appointmentId": props.ratingData.appointmentId,
+        "doctorId": props.ratingData.doctorId,
+        "rating": ratingValue,
+        "comments": commentsValue
+      }
+        try {
+          const rawPromise = fetch('http://localhost:8080/ratings',{
+              method: 'POST',
+              body: JSON.stringify(params),
+              headers: {
+                "Accept": "application/json;charset=UTF-8",
+                "Content-Type": "application/json;charset=UTF-8",
+                "authorization" : `Bearer ${accessToken}`
+              }
+          })
+          const rawResponse = await rawPromise;
+          
+        if(rawResponse.ok){
+            alert("Rating submitted");
+            closeModal();
+        }else{
+            const error = new Error();
+            //error.message = result.message ?  result.message : "something happened";
+            throw error;
+        }
+  
+        } catch (error) {
+          console.log("errrrrrrrrrrrrrrrr");
+            alert(error);
+        }
+    }
+    submit();
+}
   function ratingSubmitted(){
     console.log(ratingValue);
     if(ratingValue === ""){
-      setReqRating("")
+      setReqRating("dispBlock");
+      return;
     }
+    submitRating();
   }
 
     return reactDom.createPortal(
