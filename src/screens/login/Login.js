@@ -55,6 +55,7 @@ export default function Login(props){
         const [lastName, setLastName] = useState("");
         const [email, setEmail] = useState("");
         const [contact, setContact] = useState("");
+        const [isvalidEmail, setIsValidEmail] = useState("dispNone");
 
         const [reqUsername, setreqUsername] = useState("dispNone");
         const [reqPassword, setreqPassword] = useState("dispNone");
@@ -65,12 +66,28 @@ export default function Login(props){
         const [registerContact, setRegisterContact] = useState("dispNone");
 
         function onLoginClick(e){
+
+          function validateEmail(mail) 
+          {
+           if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+            {
+              return (true)
+            }
+              return (false)
+          }
           username === "" ? setreqUsername("dispBlock") : setreqUsername("dispNone");
           password === "" ? setreqPassword("dispBlock") : setreqPassword("dispNone");
+
+          if(validateEmail(username)){
+            setIsValidEmail("dispNone");
+          }else{
+            setIsValidEmail("dispBlock");
+          }
       
-          if (username === "" || password === "") {
+          if (username === "" || password === "" || !validateEmail(username)) {
             return;
           }
+
           async function login(){
             var params = window.btoa(`${username}:${password}`);
               try {
@@ -102,6 +119,14 @@ export default function Login(props){
         login();
       }
         function onRegisterClick(e){
+          function validateEmail(mail) 
+          {
+           if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+            {
+              return (true)
+            }
+              return (false)
+          }
 
           password === "" ? setreqPassword("dispBlock") : setreqPassword("dispNone");
           firstName === "" ? setreqFirstName("dispBlock") : setreqFirstName("dispNone");
@@ -109,7 +134,13 @@ export default function Login(props){
           email === "" ? setreqEmail("dispBlock") : setreqEmail("dispNone");
           contact === "" ? setreqContact("dispBlock") : setreqContact("dispNone");
 
-          if (password === "" || firstName === "" || lastName === "" || email === "" || contact === "") {
+          if(validateEmail(email)){
+            setIsValidEmail("dispNone");
+          }else{
+            setIsValidEmail("dispBlock");
+          }
+
+          if (password === "" || firstName === "" || lastName === "" || email === "" || contact === "" || !validateEmail(email)) {
             return;
           }
 
@@ -148,6 +179,7 @@ export default function Login(props){
         registerSubmit();
 
     }
+
         if(value === "one"){
           return (
             <div className = "loginPanel">
@@ -158,6 +190,9 @@ export default function Login(props){
               <Input id = "email" type="email" value = {username} onChange={(e) => setUsername(e.target.value)}/>
               <FormHelperText className={reqUsername}>
                 <span className="red">Required</span>
+              </FormHelperText>
+              <FormHelperText className={isvalidEmail}>
+                <span className="red">Enter valid Email</span>
               </FormHelperText>
           </FormControl>
           <br/>
@@ -211,6 +246,9 @@ export default function Login(props){
               <Input id = "email" value = {email} type = "email" onChange={(e) => setEmail(e.target.value)}/>
               <FormHelperText className={reqEmail}>
                 <span className="red">Required</span>
+              </FormHelperText>
+              <FormHelperText className={isvalidEmail}>
+                <span className="red">Enter valid Email</span>
               </FormHelperText>
           </FormControl>
           <br/>
