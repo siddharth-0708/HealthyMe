@@ -56,11 +56,15 @@ export default function Header(props){
         props.checkUserLoggedIn(false);
     }
     return(
-        <div className = "header">
-            <img src = {logo} className="logo" alt="LOGO"/>
-            <span className="textDoc">Doctor Finder</span>
-            <div className ="logButton">
-            <Button color = {showLogout ? "secondary": "primary"} variant="contained" onClick = {openModalHandler}>{showLogout ? "Logout": "Login"}</Button>
+        <div>
+            <div className = "header">
+                <div>
+                    <img src = {logo} className="logo" alt="LOGO"/>
+                    <span className="textDoc">Doctor Finder</span>
+                </div>
+                <div className ="logButton">
+                    <Button color = {showLogout ? "secondary": "primary"} variant="contained" onClick = {openModalHandler}>{showLogout ? "Logout": "Login"}</Button>
+                </div>
             </div>
             {openModal ? <Login closeModal = {onCloseModalHandler} loginIsSuccessful = {loginIsSuccessful}></Login>: null}
         </div>

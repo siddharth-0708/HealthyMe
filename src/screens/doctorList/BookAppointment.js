@@ -108,7 +108,7 @@ function BookAppointment(props){
         console.log(props);
         console.log(params);
           try {
-            const rawPromise = fetch('http://localhost:8080/appointments/appointments',{
+            const rawPromise = fetch('http://localhost:8080/appointments',{
                 method: 'POST',
                 body: JSON.stringify(params),
                 headers: {

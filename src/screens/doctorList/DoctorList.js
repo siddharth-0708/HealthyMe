@@ -30,10 +30,12 @@ function DoctorList(props) {
 
     function bookAppointment(doctor){
         setDoctorCalled(doctor);
+        setIsAppointmentDetailsCalled(false);
         setIsAppointmentCalled(true);
     }
     function viewAppointmentDetails(doctor){
         setDoctorCalled(doctor);
+        setIsAppointmentCalled(false);
         setIsAppointmentDetailsCalled(true);
     }
     function closeModal(){

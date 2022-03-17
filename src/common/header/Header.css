@@ -2,6 +2,9 @@
     background-color: purple;
     height: 70px;
     padding: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .logo{
     background-color: #ff7f7f;
